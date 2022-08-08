@@ -1,12 +1,10 @@
 let productosDiv = document.getElementById("productos")
+
 let carrito = JSON.parse(localStorage.getItem("carrito")) || []
 
-
-
-
 // MOSTRAR PRODUCTOS
-function mostrarProductos(productos) {
-    productos.forEach(producto => {
+function mostrarProductos(array) {
+    array.forEach(producto => {
         productosDiv.innerHTML += `
         <div class="producto">
             <img src=${producto.img}>
@@ -19,14 +17,10 @@ function mostrarProductos(productos) {
 mostrarProductos(products)
 
 //FILTRAR PRODUCTOS POR BOTONES
-let btnFiltro = document.getElementsByClassName("filtrar")
-for (btn of btnFiltro) {
-    btn.addEventListener("click", filtrar)
-}
 
 function filtrar(e) {
-    console.log("hola filtro")
     let btn = e.target
+    console.log(btn)
     let categoria = btn.innerText
     console.log(categoria)
     let productosFiltrados = products.filter(producto => producto.category === categoria.toLowerCase())
@@ -35,21 +29,11 @@ function filtrar(e) {
     mostrarProductos(productosFiltrados)
 }
 
-//FILTRAR PRODUCTOS POR INPUT
-// let inputFiltro = document.querySelector("#filtroInput")
-// console.log(inputFiltro)
-
-// inputFiltro.addEventListener("keyup", (e)=>{
-//     let input = e.target.value.toLowerCase()
-//     console.log(input)
-//     let productosInput = products.filter(producto => producto.name.includes(input))
-//     console.log(productosInput)
-//     mostrarProductos(productosInput)
-// })
-
-
-
-
+let btnFiltro = document.getElementsByClassName("filtrar")
+console.log(btnFiltro)
+for (btn of btnFiltro) {
+    btn.addEventListener("click", filtrar)
+}
 
 //VER TODO
 const mostrarTodo = document.querySelector(".todo")
@@ -58,7 +42,7 @@ mostrarTodo.addEventListener("click", () => {
     mostrarProductos(products)
 })
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //AGREGAR AL CARRITO 
 let botonAgregar = document.getElementsByClassName("agregar")
@@ -70,8 +54,10 @@ function agregarAlCarrito(e) {
     divCarrito.innerHTML = ""
     const boton = e.target;
     const idBoton = boton.getAttribute("id");
+    // console.log(idBoton)
     let productoSeleccionado = products.find(producto => producto.id === idBoton)
     carrito.push(productoSeleccionado)
+    console.log(carrito)
 
     //storage
     localStorage.setItem("carrito", JSON.stringify(carrito));
@@ -103,7 +89,7 @@ function mostrarCarrito() {
     divCarrito.append(totalCompra)
 
     let botonBorrar = document.getElementsByClassName("botonBorrar")
-    console.log(botonBorrar)
+    // console.log(botonBorrar)
 
     for (botonX of botonBorrar) {
         botonX.addEventListener("click", eliminarProducto)
@@ -126,8 +112,7 @@ function mostrarCarrito() {
     })
 }
 
-carrito.length ? mostrarCarrito() : carritoSection.remove()
-
+carrito.length && mostrarCarrito()
 
 
 //ELIMINAR PRODUCTO
